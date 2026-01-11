@@ -1,0 +1,52 @@
+{
+  "requestsFinished": 0,
+  "requestsFailed": 1,
+  "requestsRetries": 1,
+  "requestsFailedPerMinute": 0,
+  "requestsFinishedPerMinute": 0,
+  "requestMinDurationMillis": null,
+  "requestMaxDurationMillis": 0,
+  "requestTotalFailedDurationMillis": 53041,
+  "requestTotalFinishedDurationMillis": 0,
+  "crawlerStartedAt": "2026-01-11T13:47:45.395Z",
+  "crawlerFinishedAt": "2026-01-11T13:51:19.364Z",
+  "statsPersistedAt": "2026-01-11T13:51:19.364Z",
+  "crawlerRuntimeMillis": 214120,
+  "crawlerLastStartTimestamp": 1768139265244,
+  "requestRetryHistogram": [
+    null,
+    null,
+    null,
+    1
+  ],
+  "statsId": 27,
+  "requestAvgFailedDurationMillis": 53041,
+  "requestAvgFinishedDurationMillis": null,
+  "requestTotalDurationMillis": 53041,
+  "requestsTotal": 1,
+  "requestsWithStatusCode": {
+    "200": 4
+  },
+  "errors": {
+    "C:\\Users\\Saurabh Tagad\\product-data-explorer\\backend\\src\\scraper\\product-detail.scraper.ts:18:16": {
+      "missing error code": {
+        "TimeoutError": {
+          "page.goto: Timeout 30000ms exceeded.": {
+            "count": 1
+          }
+        }
+      }
+    }
+  },
+  "retryErrors": {
+    "C:\\Users\\Saurabh Tagad\\product-data-explorer\\backend\\src\\scraper\\product-detail.scraper.ts:18:16": {
+      "missing error code": {
+        "TimeoutError": {
+          "page.goto: Timeout 30000ms exceeded.": {
+            "count": 3
+          }
+        }
+      }
+    }
+  }
+}

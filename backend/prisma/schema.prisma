@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+
+
+model Navigation {
+  id            Int       @id @default(autoincrement())
+  title         String
+  slug          String    @unique
+  sourceUrl     String
+  lastScrapedAt DateTime?
+  categories    Category[]
+}
+
+
+model Category {
+  id            Int       @id @default(autoincrement())
+  title         String
+  slug          String
+  sourceUrl     String    
+  navigationId  Int
+  parentId      Int?
+  productCount  Int?
+  lastScrapedAt DateTime?
+
+  navigation    Navigation @relation(fields: [navigationId], references: [id])
+  parent        Category?  @relation("CategoryParent", fields: [parentId], references: [id])
+  children      Category[] @relation("CategoryParent")
+  products      Product[]
+
+  @@unique([slug, navigationId])
+}
+
+
+model Product {
+  id            Int      @id @default(autoincrement())
+  sourceId      String   @unique
+  title         String
+  price         Float
+  currency      String
+  imageUrl      String?
+  sourceUrl     String   @unique
+  lastScrapedAt DateTime?
+
+  categoryId    Int
+  category      Category @relation(fields: [categoryId], references: [id])
+
+  detail        ProductDetail?
+}
+
+
+
+model ProductDetail {
+  productId     Int      @id
+  description   String?
+  specs         Json?
+  ratingsAvg    Float?
+  reviewsCount  Int?
+
+  product       Product  @relation(fields: [productId], references: [id])
+}
+
+model ScrapeJob {
+  id          Int       @id @default(autoincrement())
+  targetUrl  String
+  targetType String
+  status     String
+  errorLog   String?
+  startedAt  DateTime  @default(now())
+  finishedAt DateTime?
+}
