@@ -15,7 +15,7 @@ export async function scrapeProductDetail(
   let result: RawProductDetail = {};
  if (process.env.DISABLE_CRAWLER === 'true') {
     console.log('🚫 scrapeCategories skipped (crawler disabled)');
-    return [];
+    return null;
   }
   const crawler = createCrawler(async ({ page }: { page: Page }) => {
     await page.goto(productUrl, {
