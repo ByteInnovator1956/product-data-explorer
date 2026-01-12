@@ -13,7 +13,10 @@ export async function scrapeProductDetail(
   productUrl: string,
 ): Promise<RawProductDetail> {
   let result: RawProductDetail = {};
-
+ if (process.env.DISABLE_CRAWLER === 'true') {
+    console.log('🚫 scrapeCategories skipped (crawler disabled)');
+    return [];
+  }
   const crawler = createCrawler(async ({ page }: { page: Page }) => {
     await page.goto(productUrl, {
       waitUntil: 'networkidle',
