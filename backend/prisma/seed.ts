@@ -3,43 +3,51 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  // 1️⃣ Navigation
+  // --------------------
+  // Navigation
+  // --------------------
   const fiction = await prisma.navigation.upsert({
-    where: { title: 'Fiction' },
+    where: { slug: 'fiction' },
     update: {},
     create: {
       title: 'Fiction',
+      slug: 'fiction',
       sourceUrl: 'https://www.worldofbooks.com/en-gb/collections/fiction-books',
     },
   });
 
   const nonFiction = await prisma.navigation.upsert({
-    where: { title: 'Non-Fiction' },
+    where: { slug: 'non-fiction' },
     update: {},
     create: {
       title: 'Non-Fiction',
+      slug: 'non-fiction',
       sourceUrl: 'https://www.worldofbooks.com/en-gb/collections/non-fiction-books',
     },
   });
 
-  // 2️⃣ Categories
+  // --------------------
+  // Categories
+  // --------------------
   await prisma.category.createMany({
+    skipDuplicates: true,
     data: [
       {
         title: 'Classics',
-        sourceUrl: 'https://www.worldofbooks.com/en-gb/collections/classics',
+        slug: 'classics',
+        sourceUrl: 'https://www.worldofbooks.com/en-gb/collections/classics-books',
         navigationId: fiction.id,
       },
       {
         title: 'Science',
+        slug: 'science',
         sourceUrl: 'https://www.worldofbooks.com/en-gb/collections/science-books',
         navigationId: nonFiction.id,
       },
     ],
-    skipDuplicates: true,
   });
 
-  console.log('✅ Database seeded successfully');
+  console.log('✅ Seed completed');
 }
 
 main()
