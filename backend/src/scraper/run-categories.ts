@@ -11,6 +11,6 @@ async function run() {
     'https://www.worldofbooks.com/en-gb/collections/fiction-books',
   );
 }
-
+}
 
 run();
