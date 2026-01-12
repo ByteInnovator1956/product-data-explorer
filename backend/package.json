@@ -7,14 +7,14 @@
   "license": "UNLICENSED",
 
   "scripts": {
-    "build": "npx prisma generate && nest build",
-    "start": "node dist/main.js",
-    "start:dev": "nest start --watch",
-    "start:prod": "node dist/main.js"
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "lint": "eslint \"{src,test}/**/*.ts\" --fix",
-    "test": "jest"
-  },
+  "build": "npx prisma generate && nest build",
+  "start": "node dist/main.js",
+  "start:dev": "nest start --watch",
+  "start:prod": "node dist/main.js",
+  "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+  "lint": "eslint \"{src,test}/**/*.ts\" --fix",
+  "test": "jest"
+},
 
   "dependencies": {
     "@nestjs/common": "^11.0.1",
