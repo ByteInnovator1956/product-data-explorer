@@ -11,7 +11,10 @@ export async function scrapeCategories(
   categoryPageUrl: string,
 ): Promise<RawCategory[]> {
   const results: RawCategory[] = [];
-
+ if (process.env.DISABLE_CRAWLER === 'true') {
+    console.log('🚫 scrapeCategories skipped (crawler disabled)');
+    return [];
+  }
   const crawler = createCrawler(
     async ({ page }: PlaywrightCrawlingContext<{ page: Page }>) => {
       await page.goto(categoryPageUrl, {
