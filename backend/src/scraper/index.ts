@@ -5,6 +5,9 @@ export function createCrawler(handler: (context: any) => Promise<void>) {
     requestHandler: handler,
     maxConcurrency: 2,
     requestHandlerTimeoutSecs: 60,
+
+    memorySnapshot: false,
+
     launchContext: {
       launchOptions: {
         headless: true,
