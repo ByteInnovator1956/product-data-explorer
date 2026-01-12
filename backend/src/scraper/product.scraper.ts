@@ -12,7 +12,10 @@ export async function scrapeProducts(
   categoryUrl: string,
 ): Promise<RawProduct[]> {
   const results: RawProduct[] = [];
-
+ if (process.env.DISABLE_CRAWLER === 'true') {
+    console.log('🚫 scrapeCategories skipped (crawler disabled)');
+    return [];
+  }
   const crawler = createCrawler(async ({ page }: { page: Page }) => {
     await page.goto(categoryUrl, {
       waitUntil: 'networkidle',
