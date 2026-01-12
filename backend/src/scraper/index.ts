@@ -6,7 +6,9 @@ export function createCrawler(handler: (context: any) => Promise<void>) {
     maxConcurrency: 2,
     requestHandlerTimeoutSecs: 60,
 
-    memorySnapshot: false,
+    autoscaledPoolOptions: {
+      systemInfoIntervalMillis: 0, // ✅ FIXES `spawn ps ENOENT`
+    },
 
     launchContext: {
       launchOptions: {
