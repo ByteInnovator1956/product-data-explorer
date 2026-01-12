@@ -5,7 +5,10 @@ import type { PlaywrightCrawlingContext } from 'crawlee';
 
 export async function scrapeNavigation() {
   const raw: { title: string; slug: string }[] = [];
-
+ if (process.env.DISABLE_CRAWLER === 'true') {
+    console.log('🚫 scrapeCategories skipped (crawler disabled)');
+    return [];
+  }
   const crawler = createCrawler(
     async ({ page }: PlaywrightCrawlingContext<{ page: Page }>) => {
       const navItems = await page.$$eval(
