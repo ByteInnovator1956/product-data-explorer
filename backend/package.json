@@ -21,7 +21,7 @@
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
 
-    "@prisma/client": "^7.2.0",
+    "@prisma/client": "^6.8.0",
 
     "pg": "^8.16.3",
     "reflect-metadata": "^0.2.2",
@@ -32,7 +32,7 @@
   },
 
   "devDependencies": {
-    "prisma": "^7.2.0",
+    "prisma": "^6.8.0",
 
     "@nestjs/cli": "^11.0.0",
     "@nestjs/schematics": "^11.0.0",
