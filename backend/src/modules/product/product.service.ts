@@ -79,51 +79,39 @@ export class ProductService {
    * STEP 6.5 — Enrich product with detail page data
    */
   async enrichProduct(productId: number) {
-  const product = await this.prisma.product.findUnique({
-    where: { id: productId },
-    include: { detail: true },
-  });
+    const product = await this.prisma.product.findUnique({
+      where: { id: productId },
+      include: { detail: true },
+    });
 
-  if (!product) return null;
+    if (!product) return null;
 
-  const needsRefresh =
-    !product.detail ||
-    !product.lastScrapedAt ||
-    Date.now() - product.lastScrapedAt.getTime() >
-      PRODUCT_DETAIL_TTL_HOURS * 60 * 60 * 1000;
+    const needsRefresh =
+      !product.detail ||
+      !product.lastScrapedAt ||
+      Date.now() - product.lastScrapedAt.getTime() >
+        PRODUCT_DETAIL_TTL_HOURS * 60 * 60 * 1000;
 
-  if (!needsRefresh) return product;
+    if (!needsRefresh) return product;
 
-  const detail = await scrapeProductDetail(product.sourceUrl);
+    const detail = await scrapeProductDetail(product.sourceUrl);
 
-  if (!detail) {
-    return product;
-  }
+    if (!detail) {
+      return product;
+    }
 
-  await this.prisma.productDetail.upsert({
-    where: { productId },
-    update: {
-      description: detail.description ?? null,
-      specs: detail.specs ?? {},
-    },
-    create: {
-      productId,
-      description: detail.description ?? null,
-      specs: detail.specs ?? {},
-    },
-  });
-
-  await this.prisma.product.update({
-    where: { id: productId },
-    data: { lastScrapedAt: new Date() },
-  });
-
-  return this.prisma.product.findUnique({
-    where: { id: productId },
-    include: { detail: true },
-  });
-}
-
+    await this.prisma.productDetail.upsert({
+      where: { productId },
+      update: {
+        description: detail.description ?? null,
+        specs: detail.specs ?? {},
+      },
+      create: {
+        productId,
+        description: detail.description ?? null,
+        specs: detail.specs ?? {},
+      },
+    });
 
     await this.prisma.product.update({
       where: { id: productId },
