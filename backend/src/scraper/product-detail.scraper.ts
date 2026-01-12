@@ -1,5 +1,4 @@
 import type { Page } from 'playwright';
-
 import { createCrawler } from './index';
 
 export interface RawProductDetail {
@@ -11,25 +10,25 @@ export interface RawProductDetail {
 
 export async function scrapeProductDetail(
   productUrl: string,
-): Promise<RawProductDetail> {
+): Promise<RawProductDetail | null> {
   let result: RawProductDetail = {};
- if (process.env.DISABLE_CRAWLER === 'true') {
-    console.log('🚫 scrapeCategories skipped (crawler disabled)');
+
+  if (process.env.DISABLE_CRAWLER === 'true') {
+    console.log('🚫 scrapeProductDetail skipped (crawler disabled)');
     return null;
   }
+
   const crawler = createCrawler(async ({ page }: { page: Page }) => {
     await page.goto(productUrl, {
       waitUntil: 'networkidle',
     });
 
-    // Description
     const description = await page
       .$eval('[data-testid="product-description"]', (el) =>
         el.textContent?.trim(),
       )
       .catch(() => undefined);
 
-    // Specs (ISBN, Publisher, etc.)
     const specs = await page
       .$$eval('[data-testid="product-specs"] li', (items) => {
         const data: Record<string, string> = {};
@@ -42,10 +41,7 @@ export async function scrapeProductDetail(
       })
       .catch(() => undefined);
 
-    result = {
-      description,
-      specs,
-    };
+    result = { description, specs };
   });
 
   await crawler.run([{ url: productUrl }]);
