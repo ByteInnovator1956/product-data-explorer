@@ -1,10 +1,13 @@
 import { PlaywrightCrawler } from 'crawlee';
 
-export function createCrawler(handler: (context: any) => Promise<void>) {
+export function createCrawler(handler: any) {
   return new PlaywrightCrawler({
     requestHandler: handler,
+
+    // 🔥 CRITICAL FIX FOR RAILWAY
+    useSessionPool: false,
     maxConcurrency: 1,
-    requestHandlerTimeoutSecs: 60,
+
     launchContext: {
       launchOptions: {
         headless: true,
