@@ -8,6 +8,7 @@
 
   "scripts": {
   "build": "npx prisma generate && nest build",
+  "seed:products": "ts-node src/scraper/run-products.ts",
   "prisma:seed": "ts-node prisma/seed.ts",
   "start": "node dist/src/main.js",
   "start:dev": "nest start --watch",
