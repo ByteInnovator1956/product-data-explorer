@@ -5,14 +5,14 @@ import { normalizeProducts } from './utils/product.normalize'
 const prisma = new PrismaClient()
 
 async function run() {
-  console.log('🚀 Seeding products...')
+  console.log('Seeding products...')
 
   const category = await prisma.category.findFirst({
     where: { slug: 'classics' },
   })
 
   if (!category) {
-    console.log('❌ Category not found')
+    console.log(' Category not found')
     return
   }
 
@@ -32,7 +32,7 @@ async function run() {
     })
   }
 
-  console.log('✅ Products seeded successfully')
+  console.log(' Products seeded successfully')
 }
 
 run()
