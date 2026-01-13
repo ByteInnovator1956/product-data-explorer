@@ -9,7 +9,7 @@ async function run() {
 
   const categories = await prisma.category.findMany({
     where: {
-      sourceUrl: { not: null },
+      sourceUrl: { not: '' },
     },
   });
 
