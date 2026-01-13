@@ -1,13 +1,12 @@
+import '../crawlee.env';
+
 import { PlaywrightCrawler } from 'crawlee';
 
-export function createCrawler(handler: any) {
+export function createCrawler(handler: (context: any) => Promise<void>) {
   return new PlaywrightCrawler({
     requestHandler: handler,
-
-    // 🔥 CRITICAL FIX FOR RAILWAY
-    useSessionPool: false,
-    maxConcurrency: 1,
-
+    maxConcurrency: 2,
+    requestHandlerTimeoutSecs: 60,
     launchContext: {
       launchOptions: {
         headless: true,
