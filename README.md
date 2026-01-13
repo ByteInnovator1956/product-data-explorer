@@ -1,33 +1,8 @@
-<a id="top"></a>
+Product Data Explorer
 
-<h1 align="center">Product Data Explorer</h1> <p align="center"> Production-grade scraping & data exploration platform built with NestJS + Next.js </p> <p align="center"> <img src="https://img.shields.io/badge/Node.js-18+-green" /> <img src="https://img.shields.io/badge/TypeScript-Strict-blue" /> <img src="https://img.shields.io/badge/Framework-NestJS-red" /> <img src="https://img.shields.io/badge/Frontend-Next.js-black" /> <img src="https://img.shields.io/badge/Status-Production-success" /> </p>
-Table of Contents
+A full-stack web application that scrapes, stores, and explores book data from World of Books using a clean, production-grade architecture.
 
-Live Deployment
-
-Project Overview
-
-Tech Stack
-
-Project Structure
-
-API Endpoints
-
-Scraping Architecture
-
-Data Strategy
-
-Frontend Highlights
-
-Environment Variables
-
-Known Limitations
-
-Roadmap
-
-Why This Project Matters
-
-Author
+This project demonstrates real-world backend scraping pipelines, API design, and a modern Next.js (App Router) frontend, with careful attention to caching, stability, and deployment best practices.
 
 Live Deployment
 
@@ -37,28 +12,24 @@ https://frontend-production-cfb0.up.railway.app
 Backend (Railway)
 https://product-data-explorer-production-cb01.up.railway.app
 
-<p align="right"><a href="#top">Back to top</a></p>
 Project Overview
 
-Real-world e-commerce style data flow:
+The application follows a real e-commerce style data flow:
 
 Navigation → Categories → Products → Product Detail
 
-Features
+What the app does
 
-Scrapes navigation, categories, and products from World of Books
+Scrapes navigation headings, categories, and products from World of Books
 
 Stores structured data in PostgreSQL
 
-REST API using NestJS
+Exposes data via RESTful APIs
 
-Modern Next.js frontend
+Displays data using a modern Next.js App Router frontend
 
-Intelligent caching (TTL based)
+Uses caching and TTL-based refresh to avoid unnecessary re-scraping
 
-Production-safe scraping strategy
-
-<p align="right"><a href="#top">Back to top</a></p>
 Tech Stack
 Backend
 
@@ -72,7 +43,10 @@ Prisma ORM
 
 PostgreSQL
 
-Crawlee + Playwright
+Crawlee + Playwright (scraping)
+
+Why PostgreSQL?
+PostgreSQL was chosen for its strong relational guarantees, indexing support, and suitability for structured scraped data with clear relationships.
 
 Frontend
 
@@ -82,13 +56,9 @@ TypeScript
 
 Tailwind CSS
 
-Server Components
+Server Components + Fetch API
 
-Fetch API
-
-<p align="right"><a href="#top">Back to top</a></p>
 Project Structure
-<details> <summary><strong>Click to expand</strong></summary>
 product-data-explorer/
 ├── backend/
 │   ├── prisma/
@@ -116,135 +86,116 @@ product-data-explorer/
 │
 └── README.md
 
-</details> <p align="right"><a href="#top">Back to top</a></p>
 Backend API Endpoints
 Method	Endpoint	Description
-GET	/api/navigation	Fetch navigation
+GET	/api/navigation	Fetch navigation headings
 GET	/api/categories/:navigationId	Fetch categories
 GET	/api/products?categoryId=XYZ	Fetch products
-GET	/api/products/:id	Fetch product details
+GET	/api/products/:id	Fetch product with detail
 
-Example response:
 
-{
-  "id": 2,
-  "title": "The Trial",
-  "price": 0,
-  "currency": "GBP"
-}
-
-<p align="right"><a href="#top">Back to top</a></p>
-Scraping Architecture
+Scraping Architecture (Important)
 Local Development
 
 Crawlers enabled
 
-Live scraping
+Data scraped live from World of Books
 
-Cached using lastScrapedAt (24h TTL)
+Cached using lastScrapedAt (TTL = 24h)
 
-Railway (Production)
+On-demand scraping supported
 
-IMPORTANT
-Crawlers are DISABLED in production
-Backend serves cached DB data only
+Railway Deployment (Production)
 
-This prevents:
+Crawlers are disabled in the web container
+
+Backend serves only cached data from the database
+
+Scraping is intended to run via controlled background or offline execution against the same database
+
+This avoids:
 
 Timeouts
 
-Rate limits
+Rate limiting
 
-Legal issues
+Ethical/legal scraping risks
 
-Production crashes
+Production instability
 
-This mirrors real industry pipelines where scraping runs via background jobs.
+This mirrors real-world production systems where scraping pipelines are decoupled from user traffic.
 
-<p align="right"><a href="#top">Back to top</a></p>
 Data Strategy
 
-Grid pages → discovery
+Grid pages (categories / products) are optimized for discovery
 
-Detail pages → source of truth
+Product detail pages are authoritative
 
-Missing prices/images allowed
+Missing prices or images in grids are allowed
 
-Data enriched over time
+Product detail enrichment happens separately
 
-Industry-standard design.
+This design is intentional and industry-standard.
+
 
 Frontend Highlights
 
-App Router navigation
 
-Skeleton loaders
+Next.js App Router–based routing
 
-Responsive layout
+Card-based UI for navigation, categories, and products
 
-Card-based UI
+Loading skeletons for better UX
 
-Graceful fallback for missing data
+Graceful handling of missing data
 
-Clean folder structure
+Responsive, mobile-first layout
+
+Structure aligned directly with backend hierarchy
 
 Environment Variables
-Backend
+
+Backend (local only)
 DATABASE_URL=postgresql://USER:PASSWORD@HOST:PORT/DB
 
 
-.env NOT committed
+.env is not committed
 
-.env.example included
+.env.example is provided
+
+Frontend (Railway)
+NEXT_PUBLIC_API_URL=https://product-data-explorer-production-cb01.up.railway.app
+
+Running Locally
+
+Backend
+cd backend
+npm install
+npm run build
+npm run start
+
+
+Ensure a valid DATABASE_URL is present in .env.
 
 Frontend
-NEXT_PUBLIC_API_URL=https://<backend-service>.up.railway.app
+cd frontend
+npm install
+npm run dev
 
-Known Limitations
+Known Limitations (Documented)
 
-No pagination (intentional)
+Product grid pagination not implemented (intentional)
 
-Price may be 0
+Prices may be 0 on grid pages
 
 Images may be missing
 
-Crawlers disabled in prod
+Crawlers disabled in production web container
 
-These are design choices, not bugs.
-
-Roadmap
-
- Scraping pipeline
-
- Caching system
-
- Production deployment
-
- Pagination
-
- Admin dashboard
-
- Search feature
-
-Why This Project Matters
-
-Demonstrates:
-
-Real scraping architecture
-
-Safe production practices
-
-Scalable backend design
-
-Clean frontend architecture
-
-Attention to UX and stability
+All of the above are documented design choices, not bugs.
 
 Author
-
 Sourabh
-Backend + Frontend Developer
 
-Built with focus on learning, correctness & production realism.
 
-<p align="center"> <a href="#top">Back to top</a> </p>
+Project built with a focus on learning, correctness, and production realism.
