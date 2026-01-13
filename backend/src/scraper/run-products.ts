@@ -1,3 +1,4 @@
+import '../crawlee.env'; 
 import { PrismaClient } from '@prisma/client';
 import { scrapeProducts } from './product.scraper';
 import { normalizeProducts } from './utils/product.normalize';
