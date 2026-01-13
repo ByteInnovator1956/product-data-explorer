@@ -8,10 +8,10 @@ async function run() {
   console.log('Seeding products...');
 
   const categories = await prisma.category.findMany({
-    where: {
-      sourceUrl: { not: '' },
-    },
-  });
+  where: {
+    sourceUrl: { not: '' },
+  },
+});
 
   for (const category of categories) {
     console.log(`Scraping category: ${category.title}`);
