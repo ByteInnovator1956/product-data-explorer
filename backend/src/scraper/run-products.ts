@@ -1,22 +1,25 @@
-
-import { scrapeProducts } from '../scraper/product.scraper'
-import { normalizeProducts } from '../scraper/utils/product.normalize'
 import { PrismaClient } from '@prisma/client'
+import { scrapeProducts } from './product.scraper'
+import { normalizeProducts } from './utils/product.normalize'
 
 const prisma = new PrismaClient()
 
 async function run() {
+  console.log('🚀 Seeding products...')
+
   const category = await prisma.category.findFirst({
     where: { slug: 'classics' },
   })
 
   if (!category) {
-    console.log('Category not found')
+    console.log('❌ Category not found')
     return
   }
 
   const raw = await scrapeProducts(category.sourceUrl)
   const products = normalizeProducts(raw)
+
+  console.log(`Found ${products.length} products`)
 
   for (const product of products) {
     await prisma.product.upsert({
@@ -29,9 +32,11 @@ async function run() {
     })
   }
 
-  console.log('✅ Products seeded')
+  console.log('✅ Products seeded successfully')
 }
 
 run()
   .catch(console.error)
-  .finally(() => prisma.$disconnect())
+  .finally(async () => {
+    await prisma.$disconnect()
+  })
